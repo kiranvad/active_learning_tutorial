@@ -18,7 +18,7 @@ from tutlib.util import (composition_grid_ternary, calculate_perimeter_score_v2,
 
 def actively_learn(input_dataset: xr.Dataset, niter: int, num_phases: int, label: Callable, extrapolate: Callable,
                    choose_next_acquisition: Callable, instrument: VirtualSAS, grid_pts_per_row: int = 100,
-                   plot: bool = True, plot_every: int = 5, plot_skip_phases: List[str] = None, ) -> xr.Dataset:
+                   plot: bool = True, plot_every: int = 5, plot_skip_phases: List[str] = None, plot_save_path: str="./") -> xr.Dataset:
     """Run an active learning loop on provided dastaset with provided label, extrapolate, and acquisition methods
 
     Parameters
@@ -193,7 +193,7 @@ def actively_learn(input_dataset: xr.Dataset, niter: int, num_phases: int, label
                     row += 1
 
             fig.update_layout(width=800, height=400 * n_rows)
-            fig.show()
+            fig.write_html(plot_save_path+"%d.html"%step)
 
     ds_output = working_dataset.copy()
     ds_output['score_mean'] = (

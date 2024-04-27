@@ -22,7 +22,8 @@ dependencies = [
     "tqdm",
     "sasmodels",
     "shapely",
-    "gpflow>2",
+    "ipywidgets>=7.0.0",
+    "nbformat>=4.2.0"
 ]
 
 [tool.setuptools]
