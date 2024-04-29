@@ -2,3 +2,5 @@
 tutlib.egg-info/
 tutlib/__pycache__/
 tutlib/instruments/__pycache__/
+figures/
+slurm/

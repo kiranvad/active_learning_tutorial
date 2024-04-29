@@ -147,8 +147,7 @@ for i, virtual_intrument in enumerate([get_virtual_instrument1, get_virtual_inst
     instrument = virtual_intrument(boundary_dataset_path = os.getcwd()+"/challenge_datasets/challenge%d.nc"%(i+1), 
                                    reference_data_path=os.getcwd()+"/reference_sans/"
                                    )
-    fig = instrument._plot_ground_truth_data()
-    fig.write_html(SAVE_DIR+"ground_truth.html")
+
     input_dataset = instrument.measure_multiple(starting_composition_list)
     results = actively_learn(niter = 21,
                              num_phases=2,

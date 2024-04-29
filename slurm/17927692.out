@@ -1,54 +1,0 @@
-SLURM_JOBID=17927692
-SLURM_JOB_NODELIST=n[3256,3259,3274-3275]
-SLURM_NNODES=4
-SLURMTMPDIR=
-working directory = /mmfs1/gscratch/scrubbed/kiranvad/active_learning_tutorial
-python from the following virtualenv
-/mmfs1/home/kiranvad/kiranvad/envs/mlmr/bin/python
-working directory = 
-/mmfs1/gscratch/scrubbed/kiranvad/active_learning_tutorial
-IP Head: 10.64.66.0:6379
-STARTING HEAD at n3256
-starting ray head node
-STARTING WORKER 1 at n3259
-starting ray worker node
-2024-04-28 21:43:34,894	INFO usage_lib.py:469 -- Usage stats collection is enabled by default without user confirmation because this terminal is detected to be non-interactive. To disable this, add `--disable-usage-stats` to the command that starts the cluster, or run the following command: `ray disable-usage-stats` before starting the cluster. See https://docs.ray.io/en/master/cluster/usage-stats.html for more details.
-2024-04-28 21:43:34,894	INFO scripts.py:764 -- Local node IP: 10.64.66.0
-2024-04-28 21:43:41,308	SUCC scripts.py:801 -- --------------------
-2024-04-28 21:43:41,308	SUCC scripts.py:802 -- Ray runtime started.
-2024-04-28 21:43:41,308	SUCC scripts.py:803 -- --------------------
-2024-04-28 21:43:41,309	INFO scripts.py:805 -- Next steps
-2024-04-28 21:43:41,309	INFO scripts.py:808 -- To add another node to this Ray cluster, run
-2024-04-28 21:43:41,309	INFO scripts.py:811 --   ray start --address='10.64.66.0:6379'
-2024-04-28 21:43:41,309	INFO scripts.py:820 -- To connect to this Ray cluster:
-2024-04-28 21:43:41,309	INFO scripts.py:822 -- import ray
-2024-04-28 21:43:41,309	INFO scripts.py:823 -- ray.init(_node_ip_address='10.64.66.0')
-2024-04-28 21:43:41,309	INFO scripts.py:854 -- To terminate the Ray runtime, run
-2024-04-28 21:43:41,309	INFO scripts.py:855 --   ray stop
-2024-04-28 21:43:41,310	INFO scripts.py:858 -- To view the status of the cluster, use
-2024-04-28 21:43:41,310	INFO scripts.py:859 --   ray status
-STARTING WORKER 2 at n3274
-starting ray worker node
-STARTING WORKER 3 at n3275
-starting ray worker node
-Launch Python job
-2024-04-28 21:44:02,076	INFO scripts.py:946 -- Local node IP: 10.64.66.3
-2024-04-28 21:44:02,597	SUCC scripts.py:959 -- --------------------
-2024-04-28 21:44:02,597	SUCC scripts.py:960 -- Ray runtime started.
-2024-04-28 21:44:02,598	SUCC scripts.py:961 -- --------------------
-2024-04-28 21:44:02,598	INFO scripts.py:963 -- To terminate the Ray runtime, run
-2024-04-28 21:44:02,598	INFO scripts.py:964 --   ray stop
-2024-04-28 21:44:08,549	INFO scripts.py:946 -- Local node IP: 10.64.66.18
-2024-04-28 21:44:08,865	SUCC scripts.py:959 -- --------------------
-2024-04-28 21:44:08,866	SUCC scripts.py:960 -- Ray runtime started.
-2024-04-28 21:44:08,866	SUCC scripts.py:961 -- --------------------
-2024-04-28 21:44:08,866	INFO scripts.py:963 -- To terminate the Ray runtime, run
-2024-04-28 21:44:08,866	INFO scripts.py:964 --   ray stop
-2024-04-28 21:44:14,630	INFO scripts.py:946 -- Local node IP: 10.64.66.19
-2024-04-28 21:44:15,004	SUCC scripts.py:959 -- --------------------
-2024-04-28 21:44:15,005	SUCC scripts.py:960 -- Ray runtime started.
-2024-04-28 21:44:15,005	SUCC scripts.py:961 -- --------------------
-2024-04-28 21:44:15,005	INFO scripts.py:963 -- To terminate the Ray runtime, run
-2024-04-28 21:44:15,005	INFO scripts.py:964 --   ray stop
-Saving the results to ./figures/tutorials/
-[2K[2K[2K[2K[2K[2K[2K[2KAll Done!
