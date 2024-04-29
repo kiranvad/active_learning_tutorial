@@ -78,7 +78,8 @@ def actively_learn(input_dataset: xr.Dataset, niter: int, num_phases: int, label
     fig = None
 
     results = defaultdict(list)
-    for step in tqdm.tqdm(range(niter)):
+    for step in range(niter):
+        print("Currently running %d/%d..."%(step, niter))
         # prepare working dataset
         working_dataset = input_dataset.copy()
         working_dataset['a_grid'] = ('grid', grid[:, 0])
@@ -143,6 +144,7 @@ def actively_learn(input_dataset: xr.Dataset, niter: int, num_phases: int, label
         results['scores'].append(best_scores)
 
         if plot and (step % plot_every) == 0:
+            print("Plotting results summary at %d/%d..."%(step, niter))
             if fig is not None:
                 display.clear_output(wait=True)
 
@@ -201,5 +203,5 @@ def actively_learn(input_dataset: xr.Dataset, niter: int, num_phases: int, label
                                                                                                             ...))
     ds_output['score_std'] = (
         pd.DataFrame(results['score_std']).to_xarray().rename(index='AL_step').to_array('phase').transpose('AL_step',
-                                                                                                           ...))
+                                                                                                        ...))
     return ds_output

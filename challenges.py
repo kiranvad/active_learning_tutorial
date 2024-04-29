@@ -60,8 +60,8 @@ def label( dataset: xr.Dataset, num_phases: int ) -> xr.Dataset:
     clf,_ = multi_kmeans_run(5, 
                            data, 
                            num_phases, 
-                           max_iter=15, 
-                           verbose=0, 
+                           max_iter=20, 
+                           verbose=3, 
                            smoothen=True
     )
     #store results in the dataset
@@ -140,7 +140,7 @@ for i, virtual_intrument in enumerate([get_virtual_instrument1, get_virtual_inst
     SAVE_DIR = "./figures/challenge_%d/"%(i+1)
     if os.path.exists(SAVE_DIR):
         shutil.rmtree(SAVE_DIR)
-        os.makedirs(SAVE_DIR)
+    os.makedirs(SAVE_DIR)
 
     print('Saving the results to %s'%SAVE_DIR)
 
