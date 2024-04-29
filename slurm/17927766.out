@@ -1,0 +1,19 @@
+SLURM_JOBID=17927766
+SLURM_JOB_NODELIST=n[3256,3259,3269,3271]
+SLURM_NNODES=4
+SLURMTMPDIR=
+working directory = /mmfs1/gscratch/scrubbed/kiranvad/active_learning_tutorial
+python from the following virtualenv
+/mmfs1/home/kiranvad/kiranvad/envs/mlmr/bin/python
+working directory = 
+/mmfs1/gscratch/scrubbed/kiranvad/active_learning_tutorial
+IP Head: :6379
+STARTING HEAD at n3256
+STARTING WORKER 1 at n3259
+starting ray worker node
+STARTING WORKER 2 at n3269
+starting ray worker node
+STARTING WORKER 3 at n3271
+starting ray worker node
+Launch Python job
+All Done!

@@ -1,0 +1,8 @@
+srun: error: Unable to create step for job 17927766: Memory required by task is not available
+srun: error: Unable to create step for job 17927766: Memory required by task is not available
+Traceback (most recent call last):
+  File "/mmfs1/gscratch/scrubbed/kiranvad/active_learning_tutorial/./challenges.py", line 10, in <module>
+    from tutlib.instruments.challenge3 import get_virtual_instrument as get_virtual_instrument3
+  File "/mmfs1/gscratch/scrubbed/kiranvad/active_learning_tutorial/tutlib/instruments/challenge3.py", line 13, in <module>
+    c_c: float = 0.16) -> array.array | float:
+TypeError: unsupported operand type(s) for |: 'type' and 'type'

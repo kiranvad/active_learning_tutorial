@@ -1,6 +1,6 @@
 import pathlib
 import array
-
+from typing import Union
 import numpy as np
 
 import pandas as pd
@@ -10,7 +10,7 @@ from tutlib.VirtualInstrument import VirtualSAS
 
 
 def sphere_radius(a: float, b: float, c: float, a_c: float = 0.47, b_c: float = 0.37,
-                  c_c: float = 0.16) -> array.array | float:
+                  c_c: float = 0.16) -> Union[array.array, float]:
     """
     Parameters
     ----------

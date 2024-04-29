@@ -249,5 +249,5 @@ class VirtualSAS:
         bd['b'] = ('samples', comps[:, 2])
         bd['c'] = ('samples', comps[:, 0])
         bd['labels'] = ('samples', labels)
-        fig = plot_ternary(bd, ['c', 'a', 'b'], include_surface=False)
+        fig = plot_ternary(bd, ['c', 'a', 'b'], include_surface=False, show=False)
         return fig
