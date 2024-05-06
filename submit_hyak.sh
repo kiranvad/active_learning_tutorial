@@ -2,9 +2,9 @@
 
 #SBATCH --job-name=mlmr
 #SBATCH --account=cheme
-#SBATCH --partition=compute
+#SBATCH --partition=ckpt
 #SBATCH --nodes=8
-#SBATCH --time=12:00:00
+#SBATCH --time=4:00:00
 #SBATCH --mem=64G
 #SBATCH --output=./slurm/%j.out
 #SBATCH --error=./slurm/%j.err
