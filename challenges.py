@@ -11,10 +11,15 @@ from tutlib.instruments.challenge2 import get_virtual_instrument as get_virtual_
 from tutlib.instruments.challenge3 import get_virtual_instrument as get_virtual_instrument3
 import numpy as np
 np.random.seed(240424)
-
-from autophasemap import multi_kmeans_run, BaseDataSet
-import os, shutil
+import scipy.interpolate as interp
+from autophasemap import multi_kmeans_run
+import os, shutil, sys
 import ray
+
+CHALLENGE = int(sys.argv[1])
+data_loc_names = ["challenge1.nc", "challenge2v3.nc", "challenge1.nc"]
+num_phases = [2,4,2]
+spline_s_values = [1.0, 0.05, 0.025]
 
 if not "ip_head" in os.environ:
     ray.init()
@@ -28,26 +33,28 @@ num_nodes = len(ray.nodes())
 print('Total number of nodes are {}'.format(num_nodes))
 print('Avaiable CPUS : ', ray.available_resources()['CPU'])
 
-class DataSet(BaseDataSet):
+class DataSet:
   def __init__(self, C, q, Iq):
-    self.flags = (Iq>0.01).all(axis=0)
+    self.flags = (Iq>0.001).all(axis=0)
     self.q = q[self.flags]
     self.Iq = Iq[:,self.flags]
     self.C = C
     self.N = self.C.shape[0]
-    self.q_log = np.log10(self.q)
+    self.n_domain = 200
+    self.q_logspace = np.geomspace(self.q.min(), self.q.max(), self.n_domain)
+    self.q_log = np.log10(self.q_logspace)
     self.t = (self.q_log-min(self.q_log))/(max(self.q_log)-min(self.q_log))
-    super().__init__(n_domain=len(self.q))
 
-    assert self.N==self.Iq.shape[0], "C and Iq should have same number of rows"
-    assert self.n_domain==self.Iq.shape[1], "Length of q should match with columns size of Iq"
-
-  def generate(self, window_length = 51):
+  def generate(self, spline_s = 0.5):
     self.F = []
     for i in range(self.N):
-      f_smooth = savgol_filter(np.log10(self.Iq[i,:]), window_length, 3)
-      norm = np.sqrt(np.trapz(f_smooth**2, np.log10(self.q)))
-      self.F.append(f_smooth/norm)
+      spline = interp.splrep(np.log10(self.q), 
+                             np.log10(self.Iq[i,:]), 
+                             s=spline_s
+                             )
+      Iq = interp.splev(self.q_log, spline)
+
+      self.F.append(Iq)
     
     return 
 
@@ -62,12 +69,12 @@ def label( dataset: xr.Dataset, num_phases: int) -> xr.Dataset:
 
     C = dataset[['a','b','c']].to_array().values.T
     data = DataSet(C, dataset["q"].values, dataset['sas'].values)
-    data.generate(window_length=WINDOW_LENGTH)
+    data.generate(spline_s = spline_s_values[CHALLENGE-1])
     # create autophasemap clustering object
-    clf = multi_kmeans_run(5, 
+    clf,_ = multi_kmeans_run(10, 
                            data, 
                            num_phases, 
-                           max_iter=50, 
+                           max_iter=30, 
                            verbose=3, 
                            smoothen=False
     )
@@ -143,38 +150,33 @@ def choose_next_acquisition(dataset: xr.Dataset) -> xr.Dataset:
 
     return dataset 
 
-i = 1
 virtual_intruments = [get_virtual_instrument1, get_virtual_instrument2, get_virtual_instrument3]
-SAVE_DIR = "./figures/challenge_%d_copy/"%(i+1)
+SAVE_DIR = "./figures_V2/challenge_%d/"%(CHALLENGE)
 if os.path.exists(SAVE_DIR):
     shutil.rmtree(SAVE_DIR)
 os.makedirs(SAVE_DIR)
 
 print('Saving the results to %s'%SAVE_DIR)
 
-data_loc_names = ["challenge1.nc", "challenge2v3.nc", "challenge1.nc"]
-num_phases = [2,4,2]
-window_lengths = [30, 15, 15]
-global WINDOW_LENGTH 
-WINDOW_LENGTH = window_lengths[i]
-instrument = virtual_intruments[i](boundary_dataset_path = os.getcwd()+"/challenge_datasets/%s"%(data_loc_names[i]), 
+
+instrument = virtual_intruments[CHALLENGE-1](boundary_dataset_path = os.getcwd()+"/challenge_datasets/%s"%(data_loc_names[CHALLENGE-1]), 
                                 reference_data_path=os.getcwd()+"/reference_sans/"
                                 )
 
 input_dataset = instrument.measure_multiple(starting_composition_list)
-results = actively_learn(niter = 26,
-                          num_phases=num_phases[i],
+results = actively_learn(niter = 101,
+                          num_phases=num_phases[CHALLENGE-1],
                           input_dataset=input_dataset,
                           label=label,
                           extrapolate=extrapolate,
                           choose_next_acquisition=choose_next_acquisition, 
                           instrument=instrument,
-                          plot=True,plot_every=5,plot_skip_phases=['D'], plot_save_path=SAVE_DIR
+                          plot=True,plot_every=10,plot_skip_phases=['D'], plot_save_path=SAVE_DIR
                         )
 results.attrs['next_sample'] = str(results.attrs['next_sample'])
-results.to_netcdf(SAVE_DIR+'/challenge_%d.nc'%(i+1))
+results.to_netcdf(SAVE_DIR+'/challenge_%d.nc'%(CHALLENGE))
 
 df = results[['score_mean','score_std']].to_array('metric').stack(stack=['metric','phase']).to_pandas()
-df.to_csv(SAVE_DIR+'/challenge_%d.csv'%(i+1))
+df.to_csv(SAVE_DIR+'/challenge_%d.csv'%(CHALLENGE))
 
 ray.shutdown()

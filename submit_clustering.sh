@@ -1,10 +1,10 @@
 #!/bin/bash
 
-#SBATCH --job-name=mlmr
+#SBATCH --job-name=mlmr-cl
 #SBATCH --account=cheme
-#SBATCH --partition=ckpt
-#SBATCH --nodes=8
-#SBATCH --time=4:00:00
+#SBATCH --partition=compute
+#SBATCH --nodes=2
+#SBATCH --time=0:30:00
 #SBATCH --mem=64G
 #SBATCH --output=./slurm/%j.out
 #SBATCH --error=./slurm/%j.err
@@ -64,6 +64,7 @@ done
 ##############################################################################################
 
 echo "Launch Python job"
-python3 -u ./challenges.py
+echo "Running challenge : $1"
+python3 -u ./run_clustering.py $1
 echo "All Done!"
 exit
